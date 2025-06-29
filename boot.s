@@ -6,7 +6,7 @@
 .set CHECKSUM,  -(MAGIC+FLAGS)  /* checksum of above, to prove multiboot */
 
 /*
-Declasre a multiboot header that marks the program as a kernel.
+Declare a multiboot header that marks the program as a kernel.
 Values documented in multiboot standard.
 Bootloader searches first 8 KiB of kernel file
 This signature is in its own section to be forced in first 8 KiB of
@@ -35,5 +35,5 @@ stack_top:
 .type _start, @function
 _start:
     /*
-
+    
     */
