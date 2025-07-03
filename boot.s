@@ -35,5 +35,29 @@ stack_top:
 .type _start, @function
 _start:
     /*
-    
+    stack setup:
+    point esp register to top of the stack
+    done here in asm, C requires a stack
     */
+    mov $stack_top, %esp
+
+    /*
+    Enter the high-level kernel
+    */
+    call kernel_main
+
+    /*
+    If the machine is done, put it into an infinite loop
+    disable interrupts with cli
+    wait for next interrupt with halt
+    jmp to halt
+    */
+    cli
+1:   hlt
+    jmp 1b
+
+/*
+Set the size of the _start symbol to the current location '.' minus its start.
+useful debugging or call tracing.
+*/
+.size _start, . - _start
