@@ -58,7 +58,7 @@ uint16_t* terminal_buffer = (uint16_t*)VGA_MEMORY;
 void terminal_initialize(void) {
     terminal_row = 0;
     terminal_column = 0;
-    terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREEN, VGA_COLOR_BLUE);
+    terminal_color = vga_entry_color(VGA_COLOR_LIGHT_RED, VGA_COLOR_WHITE);
 
     for (size_t y = 0; y < VGA_HEIGHT; ++y) {
         for (size_t x = 0; x < VGA_WIDTH; ++x) {
@@ -77,12 +77,37 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
     terminal_buffer[index] = vga_entry(c, color);
 }
 
+uint16_t terminal_getchar(size_t x, size_t y) {
+    const size_t index = y * VGA_WIDTH + x;
+    return terminal_buffer[index];
+}
+
+void scroll_up_one() {
+    for (size_t y = 0; y < VGA_HEIGHT + 1; ++y) {
+        for (size_t x = 0; x < VGA_WIDTH; ++x) {
+            uint16_t c = terminal_getchar(x, y);
+            terminal_putentryat(c, terminal_color, x, y - 1);
+        }
+    }
+    terminal_row = VGA_HEIGHT - 1;
+    terminal_column = 0;
+}
+
 void terminal_putchar(char c) {
+    if (c == '\n') {
+        if (++terminal_row == VGA_HEIGHT) {
+            scroll_up_one();
+        }
+        terminal_column = 0;
+        return;
+    }
     terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
     if (++terminal_column == VGA_WIDTH) {
         terminal_column = 0;
         if (++terminal_row == VGA_HEIGHT) {
-            terminal_row = 0;
+            // don's set to zero (resets cursor to top of screen), implement scroll
+            // terminal_row = 0;
+            scroll_up_one();
         }
     }
 }
@@ -97,10 +122,14 @@ void terminal_writestring(const char* data) {
     terminal_write(data, strlen(data));
 }
 
+
+
 void kernel_main(void) {
     // initialize terminal interface
     terminal_initialize();
 
     // implement newline support
-    terminal_writestring("Hello Kernel World!\n");
+    terminal_writestring("Testing\n\n\n\n\n\n\n\n\nTesting\n\n\n\n\nTesting\n\n\nTesting\nTesting\nTesting\nTesting\nTesting\nTesting\nTesting\nnext\nnew");
+    terminal_writestring("\nnew");
+    
 }
