@@ -1,0 +1,8 @@
+#!/bin/bash
+$TARGET-gcc boot.s -o boot.o -nostdlib -nostartfiles -c
+$TARGET-g++ -c kernel2.cpp -o kernel2.o -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti
+$TARGET-gcc -T linker.ld -o HermesOS.bin -ffreestanding -O2 -nostdlib boot.o kernel2.o -lgcc
+cp HermesOS.bin isodir/boot/HermesOS.bin
+grub2-mkrescue -o HermesOS.iso isodir
+# qemu-system-i386 -cdrom HermesOS.iso
+qemu-system-i386 -kernel HermesOS.bin
