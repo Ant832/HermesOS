@@ -129,6 +129,6 @@ extern "C" void kernel_main(void) {
 
     // implement newline support
     terminal_writestring("Testing\n\n\n\n\n\n\n\n\nTesting\n\n\n\n\nTesting\n\n\nTesting\nTesting\nTesting\nTesting\nTesting\nTesting\nTesting\nnext");
-    // terminal_writestring("\nnew");
+    terminal_writestring("\n\nnew");
     
 }

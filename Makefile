@@ -11,6 +11,5 @@ HermesOS.bin: boot.o kernel.o linker.ld
 kernel.o: c_kernel/kernel.c
 	$(CC) -c c_kernel/kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
-
 boot.o: boot.s
 	$(CC) -o boot.o boot.s -nostdlib -nostartfiles -c
