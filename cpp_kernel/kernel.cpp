@@ -77,20 +77,18 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
     terminal_buffer[index] = vga_entry(c, color);
 }
 
-uint16_t terminal_getchar(size_t x, size_t y) {
-    const size_t index = y * VGA_WIDTH + x;
-    return terminal_buffer[index];
-}
-
 void scroll_up_one() {
-    for (size_t y = 0; y < VGA_HEIGHT + 1; ++y) {
+    for (size_t y = 1; y < VGA_HEIGHT; ++y) {
         for (size_t x = 0; x < VGA_WIDTH; ++x) {
-            uint16_t c = terminal_getchar(x, y);
-            terminal_putentryat(c, terminal_color, x, y - 1);
+            terminal_buffer[(y - 1) * VGA_WIDTH + x] = terminal_buffer[y * VGA_WIDTH + x];
         }
     }
+
+    for (size_t x = 0; x < VGA_WIDTH; ++x) {
+            terminal_buffer[(VGA_HEIGHT - 1) * VGA_WIDTH + x] = vga_entry(' ', terminal_color);
+        }
     terminal_row = VGA_HEIGHT - 1;
-    terminal_column = 0;
+    // terminal_column = 0;
 }
 
 void terminal_putchar(char c) {
@@ -123,12 +121,13 @@ void terminal_writestring(const char* data) {
 }
 
 
-extern "C" void kernel_main(void) {
+
+void kernel_main(void) {
     // initialize terminal interface
     terminal_initialize();
 
     // implement newline support
-    terminal_writestring("Testing\n\n\n\n\n\n\n\n\nTesting\n\n\n\n\nTesting\n\n\nTesting\nTesting\nTesting\nTesting\nTesting\nTesting\nTesting\nnext");
-    terminal_writestring("\n\nnew");
+    terminal_writestring("Testing\n\n\n\n\n\n\n\n\nTesting\n\n\n\n\nTesting\n\n\nTesting\nTesting\nTesting\nTesting\nTesting\nTesting\nTesting\nnext\nnew");
+    terminal_writestring("\ncpp");
     
 }
