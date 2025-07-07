@@ -17,9 +17,21 @@ kernel.o: c_kernel/kernel.c
 boot.o: boot.s
 	$(CC) boot.s -o boot.o -nostdlib -nostartfiles -c
 
+CRTI_OBJ=crti.o
+CRTBEGIN_OBJ:=$(shell $(CC) -print-file-name=crtbegin.o)
+CRTEND_OBJ:=$(shell $(CC)  -print-file-name=crtend.o)
+CRTN_OBJ=crtn.o
+
+OBJ_LINK_LIST:=$(CRTI_OBJ) $(CRTBEGIN_OBJ) $(OBJS) $(CRTEND_OBJ) $(CRTN_OBJ)
+INTERNAL_OBJS:=$(CRTI_OBJ) $(OBJS) $(CRTN_OBJ)
+
+HermesOS.kernel: $(OBJ_LINK_LIST)
+	$(CC) -o HermesOS.kernel $(OBJ_LINK_LIST) -nostdlib -lgcc
+
 .PHONY : clean
 clean :
 	-rm *.o $(objects)
 	-rm *.bin $(objects)
 	-rm isodir/boot/HermesOS.bin
 	-rm HermesOS.iso
+	rm -f myos.kernel $(INTERNAL_OBJS)
