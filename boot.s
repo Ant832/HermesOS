@@ -46,8 +46,6 @@ _fini:
     popl %ebp
     ret
 
-
-
 /*
 Kernel must provide a stack
 Allocates a small stack with a symbol at the bottom, 16384 allocated
@@ -74,7 +72,9 @@ _start:
     /*
     Enter the high-level kernel
     */
+    call _init
     call kernel_main
+    call _fini
 
     /*
     If the machine is done, put it into an infinite loop
