@@ -73,7 +73,7 @@ _start:
     Enter the high-level kernel
     */
     call _init
-    call kernel_main
+    call _Z11kernel_mainv
     call _fini
 
     /*

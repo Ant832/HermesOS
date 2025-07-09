@@ -2,6 +2,13 @@
 #include <stddef.h>
 #include <stdint.h>
 
+class Stuff {
+public:
+    Stuff() {
+        static int myInt = 1;
+    }
+};
+
 #if defined(__linux__)
 #error "not using cross-compiler"
 #endif

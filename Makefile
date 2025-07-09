@@ -8,11 +8,11 @@ run: HermesOS.bin
 HermesOS.bin: boot.o kernel.o linker.ld crti.o crtn.o
 	$(CC) -T linker.ld -o HermesOS.bin -ffreestanding -O2 -nostdlib boot.o kernel.o crti.o crtn.o -lgcc
 
-# kernel.o: cpp_kernel/kernel.cpp
-# 	$$TARGET-g++ -c cpp_kernel/kernel.cpp -o kernel.o -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti
+kernel.o: cpp_kernel/kernel.cpp
+	$$TARGET-g++ -c cpp_kernel/kernel.cpp -o kernel.o -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti
 
-kernel.o: c_kernel/kernel.c
-	$(CC) -c c_kernel/kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+# kernel.o: c_kernel/kernel.c
+# 	$(CC) -c c_kernel/kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
 crti.o: crti.c boot.o
 	$(CC) -c crti.c -o crti.o -std=c99 -nostdlib
