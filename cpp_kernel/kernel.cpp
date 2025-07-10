@@ -2,10 +2,11 @@
 #include <stddef.h>
 #include <stdint.h>
 
-class Stuff {
+class myClass {
+    const char* myChar = "Hello";
 public:
-    Stuff() {
-        static int myInt = 1;
+    const char* getChar() {
+        return myChar;
     }
 };
 
@@ -134,7 +135,9 @@ void kernel_main(void) {
     terminal_initialize();
 
     // implement newline support
-    terminal_writestring("Testing\n\n\n\n\n\n\n\n\nTesting\n\n\n\n\nTesting\n\n\nTesting\nTesting\nTesting\nTesting\nTesting\nTesting\nTesting\nnext\nnew");
+    terminal_writestring("TestingTesting\n\n\n\n\nTesting\n\n\nTesting\nTesting\nTesting\nTesting\nTesting\nTesting\nTesting\nnext\nnew");
     terminal_writestring("\ncpp");
+    myClass obj;
+    terminal_writestring(obj.getChar());
     
 }
