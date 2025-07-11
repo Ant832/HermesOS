@@ -41,10 +41,10 @@ SECTIONS {
     /* other sections may be included (made by compiler)
     add as needed */
     
-    /* Include list of initialization functions sorted */
-    .init_array : ALIGN(4) {
+    /* Include list of initialization constructors sorted */
+    .ctor_array : ALIGN(4) {
         PROVIDE(_init_array_start = .);
-        KEEP(*(.init_array*));
+        KEEP(*(.ctor_array*));
         PROVIDE(_init_array_end = .);
     }
 }

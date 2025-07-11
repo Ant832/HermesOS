@@ -1,4 +1,5 @@
 extern "C" void _init_global_ctors();
+extern "C" void construct_global_obj();
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -60,7 +61,7 @@ uint16_t* terminal_buffer = (uint16_t*)VGA_MEMORY;
 void terminal_initialize(void) {
     terminal_row = 0;
     terminal_column = 0;
-    terminal_color = vga_entry_color(VGA_COLOR_LIGHT_RED, VGA_COLOR_WHITE);
+    terminal_color = vga_entry_color(VGA_COLOR_LIGHT_MAGENTA, VGA_COLOR_BLACK);
 
     for (size_t y = 0; y < VGA_HEIGHT; ++y) {
         for (size_t x = 0; x < VGA_WIDTH; ++x) {
@@ -158,10 +159,17 @@ __attribute__((constructor)) void construct_global_obj() {
     global_obj = & obj;
 }
 
+__attribute__((constructor)) void ctor_test() {
+    // while (true) {
+    
+    // }
+    static myClass obj(3);
+    global_obj = & obj;
+}
+
 void kernel_main(void) {
     // initialize terminal interface
     terminal_initialize();
-
     // implement newline support
     terminal_writestring("cpp Kernel\n");
     terminal_writestring(global_obj->getChar());

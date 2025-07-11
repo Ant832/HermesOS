@@ -19,7 +19,6 @@ the kernel file.
 .long CHECKSUM
 
 
-
 /*
 Kernel must provide a stack
 Allocates a small stack with a symbol at the bottom, 16384 allocated
@@ -47,6 +46,7 @@ _start:
     Enter the high-level kernel
     */
     call _init_global_ctors
+    call construct_global_obj
     call _Z11kernel_mainv
 
     /*
