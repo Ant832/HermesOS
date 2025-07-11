@@ -12,7 +12,7 @@ void _init_array(void) {
 }
 
 void _init_global_ctors() {
-    for (ctor_ptr* ctor = _init_array_start; ctor <= _init_array_end; ++ctor) {
+    for (ctor_ptr* ctor = _init_array_start; ctor < _init_array_end; ++ctor) {
         (*ctor)();
     }
 }
