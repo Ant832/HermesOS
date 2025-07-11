@@ -45,7 +45,6 @@ _start:
     /*
     Enter the high-level kernel
     */
-    call _init_global_ctors
     call construct_global_obj
     call _Z11kernel_mainv
 

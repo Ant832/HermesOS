@@ -1,4 +1,3 @@
-extern "C" void _init_global_ctors();
 extern "C" void construct_global_obj();
 
 #include <stdbool.h>
@@ -124,16 +123,6 @@ void terminal_writestring(const char* data) {
 }
 
 extern "C" {
-    typedef void (*ctor_ptr)(void);
-    extern ctor_ptr _init_array_start[], _init_array_end[];
-    void _init_global_ctors() {
-        for (ctor_ptr* ctor = _init_array_start; ctor < _init_array_end; ctor++) {
-            (*ctor)();
-        }
-    }
-}
-
-extern "C" {
     int __cxa_guard_acquire(char* g) { return !*g; }
     void __cxa_guard_release(char* g) { *g = 1; }
     void __cxa_guard_abort(char*) { }
@@ -145,7 +134,6 @@ class myClass {
 public:
     myClass(int toSet) {
         myInt = toSet;
-        terminal_writestring("Constructor running!\n");
     }
     const char* getChar() {
         return myChar;
@@ -159,17 +147,11 @@ __attribute__((constructor)) void construct_global_obj() {
     global_obj = & obj;
 }
 
-__attribute__((constructor)) void ctor_test() {
-    // while (true) {
-    
-    // }
-    static myClass obj(3);
-    global_obj = & obj;
-}
 
 void kernel_main(void) {
     // initialize terminal interface
     terminal_initialize();
+
     // implement newline support
     terminal_writestring("cpp Kernel\n");
     terminal_writestring(global_obj->getChar());
