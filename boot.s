@@ -73,8 +73,11 @@ _start:
     Enter the high-level kernel
     */
     call _init
+    call _init_array
+    call _init_global_ctors
     call _Z11kernel_mainv
     call _fini
+    call _fini_array
 
     /*
     If the machine is done, put it into an infinite loop

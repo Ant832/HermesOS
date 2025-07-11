@@ -3,8 +3,12 @@
 #include <stdint.h>
 
 class myClass {
+    int myInt;
     const char* myChar = "Hello";
 public:
+    myClass(int toSet) {
+        myInt = toSet;
+    }
     const char* getChar() {
         return myChar;
     }
@@ -129,15 +133,14 @@ void terminal_writestring(const char* data) {
 }
 
 
+myClass obj(3);
 
 void kernel_main(void) {
     // initialize terminal interface
     terminal_initialize();
 
     // implement newline support
-    terminal_writestring("TestingTesting\n\n\n\n\nTesting\n\n\nTesting\nTesting\nTesting\nTesting\nTesting\nTesting\nTesting\nnext\nnew");
-    terminal_writestring("\ncpp");
-    myClass obj;
+    terminal_writestring("cpp Kernel\n");
     terminal_writestring(obj.getChar());
     
 }

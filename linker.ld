@@ -40,7 +40,7 @@ SECTIONS {
     }
     /* other sections may be included (made by compiler)
     add as needed */
-
+    
     /* Include list of initialization functions sorted */
     .init_array : {
         crti.o(.init_array)
