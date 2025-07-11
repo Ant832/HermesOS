@@ -18,33 +18,7 @@ the kernel file.
 .long FLAGS
 .long CHECKSUM
 
-/* x86 crti.s */
-.section .init
-.global _init
-.type _init, @function
-_init:
-    push %ebp
-    movl %esp, %ebp
-    /* gcc puts crtbegin.o's .init section contents here */
 
-.section .fini
-.global _fini
-.type _fini, @function
-_fini:
-    push %ebp
-    movl %esp, %ebp
-    /* gcc puts crtbegin.o's .fini section contents here */
-
-/* x86 crtn.s */
-.section .init
-    /* gcc puts crtend.o's .init section contents here */
-    popl %ebp
-    ret
-
-.section .fini
-    /* gcc puts crtend.o's .fini section contents here */
-    popl %ebp
-    ret
 
 /*
 Kernel must provide a stack
@@ -72,12 +46,8 @@ _start:
     /*
     Enter the high-level kernel
     */
-    call _init
-    call _init_array
     call _init_global_ctors
     call _Z11kernel_mainv
-    call _fini
-    call _fini_array
 
     /*
     If the machine is done, put it into an infinite loop

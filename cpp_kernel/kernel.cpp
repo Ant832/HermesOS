@@ -1,18 +1,8 @@
+extern "C" void _init_global_ctors();
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-
-class myClass {
-    int myInt;
-    const char* myChar = "Hello";
-public:
-    myClass(int toSet) {
-        myInt = toSet;
-    }
-    const char* getChar() {
-        return myChar;
-    }
-};
 
 #if defined(__linux__)
 #error "not using cross-compiler"
@@ -132,8 +122,41 @@ void terminal_writestring(const char* data) {
     terminal_write(data, strlen(data));
 }
 
+extern "C" {
+    typedef void (*ctor_ptr)(void);
+    extern ctor_ptr _init_array_start[], _init_array_end[];
+    void _init_global_ctors() {
+        for (ctor_ptr* ctor = _init_array_start; ctor < _init_array_end; ctor++) {
+            (*ctor)();
+        }
+    }
+}
 
-myClass obj(3);
+extern "C" {
+    int __cxa_guard_acquire(char* g) { return !*g; }
+    void __cxa_guard_release(char* g) { *g = 1; }
+    void __cxa_guard_abort(char*) { }
+}
+
+class myClass {
+    int myInt;
+    const char* myChar = "Hello";
+public:
+    myClass(int toSet) {
+        myInt = toSet;
+        terminal_writestring("Constructor running!\n");
+    }
+    const char* getChar() {
+        return myChar;
+    }
+};
+
+myClass* global_obj;
+
+__attribute__((constructor)) void construct_global_obj() {
+    static myClass obj(3);
+    global_obj = & obj;
+}
 
 void kernel_main(void) {
     // initialize terminal interface
@@ -141,6 +164,6 @@ void kernel_main(void) {
 
     // implement newline support
     terminal_writestring("cpp Kernel\n");
-    terminal_writestring(obj.getChar());
+    terminal_writestring(global_obj->getChar());
     
 }
