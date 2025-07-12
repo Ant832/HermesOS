@@ -122,6 +122,28 @@ void terminal_writestring(const char* data) {
     terminal_write(data, strlen(data));
 }
 
+// void reverse_string(char* s) {
+
+// }
+
+void int_to_str(int data, char* s) {
+    static_assert(-5 % 3 == -2);
+    if (data < 0) {
+        *s++ = '-';
+    } else {
+        data = -data;
+    }
+    int copy = data;
+    while (copy /= 10) {
+        terminal_writestring("incrementing string buffer\n");
+        ++s;
+    }
+    while (data /= 10) {
+        terminal_writestring("building string\n");
+        *s-- = '0' - data % 10;
+    }
+}
+
 extern "C" {
     int __cxa_guard_acquire(char* g) { return !*g; }
     void __cxa_guard_release(char* g) { *g = 1; }
@@ -138,12 +160,15 @@ public:
     const char* getChar() {
         return myChar;
     }
+    int getInt() {
+        return myInt;
+    }
 };
 
 myClass* global_obj;
 
 __attribute__((constructor)) void construct_global_obj() {
-    static myClass obj(3);
+    static myClass obj(32);
     global_obj = & obj;
 }
 
@@ -155,5 +180,10 @@ void kernel_main(void) {
     // implement newline support
     terminal_writestring("cpp Kernel\n");
     terminal_writestring(global_obj->getChar());
+    terminal_writestring("\n");
+
+    char s[10];
+    int_to_str(global_obj->getInt(), s);
+    terminal_writestring(s);
     
 }
