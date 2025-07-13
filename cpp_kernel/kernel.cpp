@@ -134,14 +134,15 @@ void int_to_str(int data, char* s) {
         data = -data;
     }
     int copy = data;
-    while (copy /= 10) {
-        terminal_writestring("incrementing string buffer\n");
+    do {
         ++s;
     }
-    while (data /= 10) {
-        terminal_writestring("building string\n");
-        *s-- = '0' - data % 10;
+    while (copy /= 10);
+    *s = '\n';
+    do {
+        *--s = '0' - data % 10;
     }
+    while (data /= 10);
 }
 
 extern "C" {
@@ -168,7 +169,7 @@ public:
 myClass* global_obj;
 
 __attribute__((constructor)) void construct_global_obj() {
-    static myClass obj(32);
+    static myClass obj(-332232232);
     global_obj = & obj;
 }
 
@@ -182,8 +183,19 @@ void kernel_main(void) {
     terminal_writestring(global_obj->getChar());
     terminal_writestring("\n");
 
-    char s[10];
+    int intSize = 0;
+    int targetInt = global_obj->getInt();
+    do {
+        ++intSize;
+    }
+    while (targetInt /= 10);
+    if (targetInt < 0) { ++intSize; }
+
+    char s[intSize];
     int_to_str(global_obj->getInt(), s);
     terminal_writestring(s);
+    int_to_str(intSize, s);
+    terminal_writestring(s);
+    terminal_writestring("Finished\n");
     
 }
