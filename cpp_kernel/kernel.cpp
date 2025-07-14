@@ -138,7 +138,6 @@ void int_to_str(int data, char* s) {
         ++s;
     }
     while (copy /= 10);
-    *s = '\n';
     do {
         *--s = '0' - data % 10;
     }
@@ -169,7 +168,7 @@ public:
 myClass* global_obj;
 
 __attribute__((constructor)) void construct_global_obj() {
-    static myClass obj(-332232232);
+    static myClass obj(-33);
     global_obj = & obj;
 }
 
@@ -189,13 +188,10 @@ void kernel_main(void) {
         ++intSize;
     }
     while (targetInt /= 10);
-    if (targetInt < 0) { ++intSize; }
 
     char s[intSize];
     int_to_str(global_obj->getInt(), s);
     terminal_writestring(s);
-    int_to_str(intSize, s);
-    terminal_writestring(s);
-    terminal_writestring("Finished\n");
+    terminal_writestring("\nFinished\n");
     
 }
