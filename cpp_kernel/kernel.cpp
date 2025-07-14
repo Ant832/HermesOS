@@ -122,9 +122,43 @@ void terminal_writestring(const char* data) {
     terminal_write(data, strlen(data));
 }
 
-// void reverse_string(char* s) {
+class myInt {
+    int value = 0;
+public:
+    myInt(int toSet) {
+        value = toSet;
+    }
 
-// }
+    operator int() {
+        return value;
+    }
+
+    void string(char* s) {
+        static_assert(-5 % 3 == -2);
+
+        int intSize = 0;
+        int targetInt = value;
+        do {
+            ++intSize;
+        }
+        while (targetInt /= 10);
+
+        if (value < 0) {
+            *s++ = '-';
+        } else {
+            value = -value;
+        }
+        int copy = value;
+        do {
+            ++s;
+        }
+        while (copy /= 10);
+        do {
+            *--s = '0' - value % 10;
+        }
+        while (value /= 10);
+    }
+};
 
 void int_to_str(int data, char* s) {
     static_assert(-5 % 3 == -2);
@@ -147,6 +181,16 @@ void int_to_str(int data, char* s) {
 void hex_to_str(int data, char* s) {
     *s++ = '0';
     *s++ = 'x';
+    char characters[16] {'1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+
+    int copy = data;
+    while (copy /= 10) {
+        ++s;
+    }
+    do {
+        *s-- = characters[data % 16];
+    }
+    while (data /= 10);
 }
 
 extern "C" {
@@ -199,13 +243,24 @@ void kernel_main(void) {
     terminal_writestring(s);
     terminal_writestring("\n");
 
-    int hex = 70;
-    char hexStr[intSize];
+    int hex = 99;
+    char hexStr[10];
     hex_to_str(hex, hexStr);
     terminal_writestring(hexStr);
+    terminal_writestring("\n");
 
+    myInt value(10);
+    intSize = 0;
+    targetInt = value;
+    do {
+        ++intSize;
+    }
+    while (targetInt /= 10);
+    char myStr[intSize];
+    value.string(myStr);
+    terminal_writestring(myStr);
+    terminal_writestring("\n");
 
-
-    terminal_writestring("\nFinished\n");
+    terminal_writestring("Finished\n");
     
 }
