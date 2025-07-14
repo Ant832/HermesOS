@@ -144,6 +144,11 @@ void int_to_str(int data, char* s) {
     while (data /= 10);
 }
 
+void hex_to_str(int data, char* s) {
+    *s++ = '0';
+    *s++ = 'x';
+}
+
 extern "C" {
     int __cxa_guard_acquire(char* g) { return !*g; }
     void __cxa_guard_release(char* g) { *g = 1; }
@@ -192,6 +197,15 @@ void kernel_main(void) {
     char s[intSize];
     int_to_str(global_obj->getInt(), s);
     terminal_writestring(s);
+    terminal_writestring("\n");
+
+    int hex = 70;
+    char hexStr[intSize];
+    hex_to_str(hex, hexStr);
+    terminal_writestring(hexStr);
+
+
+
     terminal_writestring("\nFinished\n");
     
 }
