@@ -122,41 +122,50 @@ void terminal_writestring(const char* data) {
     terminal_write(data, strlen(data));
 }
 
+void* malloc(size_t size) {
+    void* p;
+    return p;
+}
+
 class myInt {
     int value = 0;
+    char* str;
+    int intLen = 0;
 public:
     myInt(int toSet) {
         value = toSet;
+
+        int targetInt = value;
+        do {
+            ++intLen;
+        }
+        while (targetInt /= 10);
     }
 
     operator int() {
         return value;
     }
 
-    void string(char* s) {
+    char* string() {
         static_assert(-5 % 3 == -2);
-
-        int intSize = 0;
-        int targetInt = value;
-        do {
-            ++intSize;
-        }
-        while (targetInt /= 10);
+        str = (char *)malloc(intLen * sizeof(char));
 
         if (value < 0) {
-            *s++ = '-';
+            *str++ = '-';
         } else {
             value = -value;
         }
         int copy = value;
         do {
-            ++s;
+            ++str;
         }
         while (copy /= 10);
         do {
-            *--s = '0' - value % 10;
+            *--str = '0' - value % 10;
         }
         while (value /= 10);
+
+        return str;
     }
 };
 
@@ -250,15 +259,7 @@ void kernel_main(void) {
     terminal_writestring("\n");
 
     myInt value(10);
-    intSize = 0;
-    targetInt = value;
-    do {
-        ++intSize;
-    }
-    while (targetInt /= 10);
-    char myStr[intSize];
-    value.string(myStr);
-    terminal_writestring(myStr);
+    terminal_writestring(value.string());
     terminal_writestring("\n");
 
     terminal_writestring("Finished\n");
