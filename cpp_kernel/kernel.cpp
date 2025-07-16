@@ -3,6 +3,7 @@ extern "C" void construct_global_obj();
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <lib.hpp>
 
 #if defined(__linux__)
 #error "not using cross-compiler"
@@ -122,86 +123,6 @@ void terminal_writestring(const char* data) {
     terminal_write(data, strlen(data));
 }
 
-void* malloc(size_t size) {
-    void* p;
-    return p;
-}
-
-class myInt {
-    int value = 0;
-    char* str;
-    int intLen = 0;
-public:
-    myInt(int toSet) {
-        value = toSet;
-
-        int targetInt = value;
-        do {
-            ++intLen;
-        }
-        while (targetInt /= 10);
-    }
-
-    operator int() {
-        return value;
-    }
-
-    char* string() {
-        static_assert(-5 % 3 == -2);
-        str = (char *)malloc(intLen * sizeof(char));
-
-        if (value < 0) {
-            *str++ = '-';
-        } else {
-            value = -value;
-        }
-        int copy = value;
-        do {
-            ++str;
-        }
-        while (copy /= 10);
-        do {
-            *--str = '0' - value % 10;
-        }
-        while (value /= 10);
-
-        return str;
-    }
-};
-
-void int_to_str(int data, char* s) {
-    static_assert(-5 % 3 == -2);
-    if (data < 0) {
-        *s++ = '-';
-    } else {
-        data = -data;
-    }
-    int copy = data;
-    do {
-        ++s;
-    }
-    while (copy /= 10);
-    do {
-        *--s = '0' - data % 10;
-    }
-    while (data /= 10);
-}
-
-void hex_to_str(int data, char* s) {
-    *s++ = '0';
-    *s++ = 'x';
-    char characters[16] {'1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-
-    int copy = data;
-    while (copy /= 10) {
-        ++s;
-    }
-    do {
-        *s-- = characters[data % 16];
-    }
-    while (data /= 10);
-}
-
 extern "C" {
     int __cxa_guard_acquire(char* g) { return !*g; }
     void __cxa_guard_release(char* g) { *g = 1; }
@@ -256,10 +177,6 @@ void kernel_main(void) {
     char hexStr[10];
     hex_to_str(hex, hexStr);
     terminal_writestring(hexStr);
-    terminal_writestring("\n");
-
-    myInt value(10);
-    terminal_writestring(value.string());
     terminal_writestring("\n");
 
     terminal_writestring("Finished\n");
