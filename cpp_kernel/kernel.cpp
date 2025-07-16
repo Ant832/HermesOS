@@ -3,7 +3,7 @@ extern "C" void construct_global_obj();
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <lib.hpp>
+#include "lib.hpp"
 
 #if defined(__linux__)
 #error "not using cross-compiler"
@@ -131,7 +131,7 @@ extern "C" {
 
 class myClass {
     int myInt;
-    const char* myChar = "Hello";
+    const char* myChar = "Hello from myClass";
 public:
     myClass(int toSet) {
         myInt = toSet;
@@ -173,8 +173,16 @@ void kernel_main(void) {
     terminal_writestring(s);
     terminal_writestring("\n");
 
-    int hex = 99;
-    char hexStr[10];
+    int hex = 993;
+    // get str length
+    int hexSize = 0;
+    int targetHex = hex;
+    do {
+        ++hexSize;
+    }
+    while (targetHex /= 10);
+    // set str length
+    char hexStr[hexSize];
     hex_to_str(hex, hexStr);
     terminal_writestring(hexStr);
     terminal_writestring("\n");

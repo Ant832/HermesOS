@@ -25,16 +25,14 @@ void hex_to_str(int data, char* s) {
     char characters[16] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
     int copy = data;
-    while (copy /= 10) {
+    do {
         ++s;
     }
+    while (copy /= 16);
     do {
         *s-- = characters[data % 16];
     }
-    while (data /= 10);
+    while (data /= 16);
 }
-
-
-
 
 #endif
