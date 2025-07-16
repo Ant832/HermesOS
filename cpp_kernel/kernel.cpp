@@ -180,7 +180,7 @@ void kernel_main(void) {
     do {
         ++hexSize;
     }
-    while (targetHex /= 10);
+    while (targetHex /= 16);
     // set str length
     char hexStr[hexSize];
     hex_to_str(hex, hexStr);
