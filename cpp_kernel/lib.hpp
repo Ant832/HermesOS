@@ -13,6 +13,7 @@ void int_to_str(int data, char* s) {
         ++s;
     }
     while (copy /= 10);
+    *s = '\0';
     do {
         *--s = '0' - data % 10;
     }
@@ -21,7 +22,12 @@ void int_to_str(int data, char* s) {
 
 void hex_to_str(int data, char* s) {
     *s++ = '0';
-    *s = 'x';
+    *s++ = 'x';
+    if (data == 0) {
+        *s++ = 0;
+        *s = '\0';
+        return;
+    }
     char characters[16] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
     int copy = data;
@@ -29,8 +35,9 @@ void hex_to_str(int data, char* s) {
         ++s;
     }
     while (copy /= 16);
+    *s = '\0';
     do {
-        *s-- = characters[data % 16];
+        *--s = characters[data % 16];
     }
     while (data /= 16);
 }

@@ -147,8 +147,8 @@ public:
 myClass* global_obj;
 
 __attribute__((constructor)) void construct_global_obj() {
-    static myClass obj(-33);
-    global_obj = & obj;
+    static myClass obj(348371534);
+    global_obj = &obj;
 }
 
 
@@ -161,28 +161,13 @@ void kernel_main(void) {
     terminal_writestring(global_obj->getChar());
     terminal_writestring("\n");
 
-    int intSize = 0;
-    int targetInt = global_obj->getInt();
-    do {
-        ++intSize;
-    }
-    while (targetInt /= 10);
-
-    char s[intSize];
+    char s[15];
     int_to_str(global_obj->getInt(), s);
     terminal_writestring(s);
     terminal_writestring("\n");
 
-    int hex = 993;
-    // get str length
-    int hexSize = 0;
-    int targetHex = hex;
-    do {
-        ++hexSize;
-    }
-    while (targetHex /= 16);
-    // set str length
-    char hexStr[hexSize];
+    int hex = 99;
+    char hexStr[15];
     hex_to_str(hex, hexStr);
     terminal_writestring(hexStr);
     terminal_writestring("\n");
