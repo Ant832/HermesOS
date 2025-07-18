@@ -13,6 +13,8 @@ extern "C" void construct_global_obj();
 #error "needs to be compiled with ix86-elf compiler"
 #endif
 
+#define HEAP_SIZE 0x10000;
+
 enum vga_color {
     VGA_COLOR_BLACK = 0,
     VGA_COLOR_BLUE = 1,
@@ -123,55 +125,82 @@ void terminal_writestring(const char* data) {
     terminal_write(data, strlen(data));
 }
 
-extern "C" {
-    int __cxa_guard_acquire(char* g) { return !*g; }
-    void __cxa_guard_release(char* g) { *g = 1; }
-    void __cxa_guard_abort(char*) { }
-}
+// extern "C" {
+//     int __cxa_guard_acquire(char* g) { return !*g; }
+//     void __cxa_guard_release(char* g) { *g = 1; }
+//     void __cxa_guard_abort(char*) { }
+// }
 
-class myClass {
-    int myInt;
-    const char* myChar = "Welcome to HermesOS";
-public:
-    myClass(int toSet) {
-        myInt = toSet;
-    }
-    const char* getChar() {
-        return myChar;
-    }
-    int getInt() {
-        return myInt;
-    }
-};
+// class myClass {
+//     int myInt;
+//     const char* myChar = "cpp Kernel";
+// public:
+//     myClass(int toSet) {
+//         myInt = toSet;
+//     }
+//     const char* getChar() {
+//         return myChar;
+//     }
+//     int getInt() {
+//         return myInt;
+//     }
+// };
 
-myClass* global_obj;
+// myClass* global_obj;
 
 __attribute__((constructor)) void construct_global_obj() {
-    static myClass obj(143);
-    global_obj = &obj;
+    // setup globals here
+    // static myClass obj(143);
+    // global_obj = &obj;
 }
 
 
-void kernel_main(void) {
+int kernel_main(void) {
     // initialize terminal interface
     terminal_initialize();
 
     // implement newline support
-    terminal_writestring("cpp Kernel\n");
-    terminal_writestring(global_obj->getChar());
+    terminal_writestring("Welcome to HermesOS\n");
+    terminal_setcolor(VGA_COLOR_GREEN);
+
+
+
+    extern char _end;
+    uintptr_t heap_start = reinterpret_cast<uintptr_t> (&_end);
+
+    static char* heap_start_ptr = &_end;
+    static char* heap_end_ptr = &_end + HEAP_SIZE;
+    
+    char heap_start_addr_str[16];
+    hex_to_str(heap_start, heap_start_addr_str);
+    
+    terminal_writestring("Heap start addr: ");
+    terminal_writestring(heap_start_addr_str);
     terminal_writestring("\n");
 
-    char s[15];
-    int_to_str(global_obj->getInt(), s);
-    terminal_writestring(s);
+    char heap_end_addr_str[16];
+    hex_to_str(reinterpret_cast<uintptr_t>(heap_end_ptr), heap_end_addr_str);   
+
+    terminal_writestring("Heap end addr: ");
+    terminal_writestring(heap_end_addr_str);
     terminal_writestring("\n");
 
-    int hex = 99;
-    char hexStr[15];
-    hex_to_str(hex, hexStr);
-    terminal_writestring(hexStr);
-    terminal_writestring("\n");
+    // terminal_writestring(global_obj->getChar());
+    // terminal_writestring("\n");
 
+    // char s[15];
+    // int_to_str(global_obj->getInt(), s);
+    // terminal_writestring(s);
+    // terminal_writestring("\n");
+
+    // int hex = 99;
+    // char hexStr[15];
+    // hex_to_str(hex, hexStr);
+    // terminal_writestring(hexStr);
+    // terminal_writestring("\n");
+
+    terminal_setcolor(VGA_COLOR_LIGHT_MAGENTA);
     terminal_writestring("Finished\n");
     
+    return 0;
 }

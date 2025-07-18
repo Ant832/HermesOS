@@ -40,4 +40,6 @@ SECTIONS {
     }
     /* other sections may be included (made by compiler)
     add as needed */
+
+    _end = .;
 }
