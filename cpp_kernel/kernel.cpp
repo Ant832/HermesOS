@@ -131,7 +131,7 @@ extern "C" {
 
 class myClass {
     int myInt;
-    const char* myChar = "Hello from myClass";
+    const char* myChar = "Welcome to HermesOS";
 public:
     myClass(int toSet) {
         myInt = toSet;
@@ -147,7 +147,7 @@ public:
 myClass* global_obj;
 
 __attribute__((constructor)) void construct_global_obj() {
-    static myClass obj(348371534);
+    static myClass obj(143);
     global_obj = &obj;
 }
 
