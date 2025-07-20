@@ -1,6 +1,8 @@
 #ifndef MALLOC_HPP
 #define MALLOC_HPP
 
+#include <stddef.h>
+
 struct data_block {
     int* size;
     struct data_block* next;
@@ -14,6 +16,10 @@ public:
 
     }
 };
+
+void* malloc(size_t size) {
+    
+}
 
 
 #endif

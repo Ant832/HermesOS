@@ -137,12 +137,8 @@ int kernel_main(void) {
     terminal_writestring("Welcome to HermesOS\n");
     terminal_setcolor(VGA_COLOR_GREEN);
 
-
-
     extern char _end;
     uintptr_t heap_start = reinterpret_cast<uintptr_t> (&_end);
-
-    // static char* heap_start_ptr = &_end;
     uintptr_t heap_end_ptr = reinterpret_cast<uintptr_t> (&_end) + HEAP_SIZE;
     
     char heap_start_addr_str[16];
