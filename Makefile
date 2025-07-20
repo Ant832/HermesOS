@@ -9,8 +9,9 @@ run: HermesOS.bin
 HermesOS.bin: boot.o kernel.o linker.ld
 	$(CC) -T linker.ld -o HermesOS.bin -ffreestanding -O2 -nostdlib boot.o kernel.o -lgcc
 
-kernel.o: cpp_kernel/kernel.cpp
-	$(CXX) -c cpp_kernel/kernel.cpp -o kernel.o -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti
+kernel.o: cpp_kernel/kernel.cpp cpp_kernel/malloc.hpp cpp_kernel/lib.hpp cpp_kernel/string.hpp
+	$(CXX) -c cpp_kernel/kernel.cpp -o kernel.o -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -MMD
+
 
 # kernel.o: c_kernel/kernel.c
 # 	$(CC) -c c_kernel/kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
@@ -18,6 +19,8 @@ kernel.o: cpp_kernel/kernel.cpp
 boot.o: boot.s
 	$(CC) boot.s -o boot.o -nostdlib -nostartfiles -c
 
+-include *.d
+
 .PHONY : clean
 clean :
-	rm -f *.o *.bin isodir/boot/HermesOS.bin HermesOS.iso
+	rm -f *.o *.bin isodir/boot/HermesOS.bin HermesOS.iso *.d
