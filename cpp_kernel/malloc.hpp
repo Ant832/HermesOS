@@ -2,6 +2,7 @@
 #define MALLOC_HPP
 
 #include <stddef.h>
+#include "string.hpp"
 
 struct data_block {
     int* size;
@@ -18,7 +19,10 @@ public:
 };
 
 void* malloc(size_t size) {
-    
+    terminal_writestring("test malloc call\n");
+    void* p = reinterpret_cast<void*> (size);
+
+    return p;
 }
 
 
