@@ -93,7 +93,6 @@ void scroll_up_one() {
             terminal_buffer[(VGA_HEIGHT - 1) * VGA_WIDTH + x] = vga_entry(' ', terminal_color);
         }
     terminal_row = VGA_HEIGHT - 1;
-    // terminal_column = 0;
 }
 
 void terminal_putchar(char c) {
@@ -108,8 +107,6 @@ void terminal_putchar(char c) {
     if (++terminal_column == VGA_WIDTH) {
         terminal_column = 0;
         if (++terminal_row == VGA_HEIGHT) {
-            // don's set to zero (resets cursor to top of screen), implement scroll
-            // terminal_row = 0;
             scroll_up_one();
         }
     }
@@ -125,33 +122,10 @@ void terminal_writestring(const char* data) {
     terminal_write(data, strlen(data));
 }
 
-// extern "C" {
-//     int __cxa_guard_acquire(char* g) { return !*g; }
-//     void __cxa_guard_release(char* g) { *g = 1; }
-//     void __cxa_guard_abort(char*) { }
-// }
-
-// class myClass {
-//     int myInt;
-//     const char* myChar = "cpp Kernel";
-// public:
-//     myClass(int toSet) {
-//         myInt = toSet;
-//     }
-//     const char* getChar() {
-//         return myChar;
-//     }
-//     int getInt() {
-//         return myInt;
-//     }
-// };
-
-// myClass* global_obj;
 
 __attribute__((constructor)) void construct_global_obj() {
     // setup globals here
-    // static myClass obj(143);
-    // global_obj = &obj;
+
 }
 
 
@@ -168,8 +142,8 @@ int kernel_main(void) {
     extern char _end;
     uintptr_t heap_start = reinterpret_cast<uintptr_t> (&_end);
 
-    static char* heap_start_ptr = &_end;
-    static char* heap_end_ptr = &_end + HEAP_SIZE;
+    // static char* heap_start_ptr = &_end;
+    uintptr_t heap_end_ptr = reinterpret_cast<uintptr_t> (&_end) + HEAP_SIZE;
     
     char heap_start_addr_str[16];
     hex_to_str(heap_start, heap_start_addr_str);
@@ -181,23 +155,9 @@ int kernel_main(void) {
     char heap_end_addr_str[16];
     hex_to_str(reinterpret_cast<uintptr_t>(heap_end_ptr), heap_end_addr_str);   
 
-    terminal_writestring("Heap end addr: ");
+    terminal_writestring("Heap end addr  : ");
     terminal_writestring(heap_end_addr_str);
     terminal_writestring("\n");
-
-    // terminal_writestring(global_obj->getChar());
-    // terminal_writestring("\n");
-
-    // char s[15];
-    // int_to_str(global_obj->getInt(), s);
-    // terminal_writestring(s);
-    // terminal_writestring("\n");
-
-    // int hex = 99;
-    // char hexStr[15];
-    // hex_to_str(hex, hexStr);
-    // terminal_writestring(hexStr);
-    // terminal_writestring("\n");
 
     terminal_setcolor(VGA_COLOR_LIGHT_MAGENTA);
     terminal_writestring("Finished\n");
