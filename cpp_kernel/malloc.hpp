@@ -3,6 +3,16 @@
 
 #include <stddef.h>
 #include "string.hpp"
+#include "lib.hpp"
+
+#define HEAP_SIZE 0x10000;
+extern char _end;
+uintptr_t heap_start = reinterpret_cast<uintptr_t> (&_end);
+uintptr_t heap_end_ptr = reinterpret_cast<uintptr_t> (&_end) + HEAP_SIZE;
+
+uintptr_t current = reinterpret_cast<uintptr_t> (&_end);
+
+void* sbrk(size_t size);
 
 struct data_block {
     int* size;
@@ -19,10 +29,18 @@ public:
 };
 
 void* malloc(size_t size) {
-    terminal_writestring("test malloc call\n");
-    void* p = reinterpret_cast<void*> (size);
+    void* heap_addr = sbrk(size);
 
-    return p;
+    return heap_addr;
+}
+
+void* sbrk(size_t size) {
+
+    for (unsigned int i = 0; i < size; ++i) {
+        ++current;
+    }
+
+    return reinterpret_cast<void*> (current);
 }
 
 
