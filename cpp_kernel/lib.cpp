@@ -1,5 +1,4 @@
-#ifndef LIB_HPP
-#define LIB_HPP
+#include "lib.hpp"
 
 void int_to_str(int data, char* s) {
     static_assert(-5 % 3 == -2);
@@ -41,5 +40,3 @@ void hex_to_str(int data, char* s) {
     }
     while (data /= 16);
 }
-
-#endif

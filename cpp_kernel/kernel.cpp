@@ -4,7 +4,7 @@ extern "C" void construct_global_obj();
 #include <stddef.h>
 #include <stdint.h>
 #include "lib.hpp"
-#include "string.hpp"
+#include "terminal.hpp"
 #include "malloc.hpp"
 
 #if defined(__linux__)
@@ -28,7 +28,8 @@ int kernel_main(void) {
     terminal_writestring("Welcome to HermesOS\n");
     terminal_setcolor(VGA_COLOR_GREEN);
 
-    char* myString = (char*) malloc((5 + 1)*sizeof(char)); // allocate space for 5 letters + '\0'
+    // char* myString = (char*) malloc((5 + 1)*sizeof(char)); // allocate space for 5 letters + '\0'
+    char myString[6];
     int character = 65;
     
     for (unsigned int i = 0; i < 5; ++i) {
