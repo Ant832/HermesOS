@@ -28,9 +28,13 @@ int kernel_main(void) {
     terminal_writestring("Welcome to HermesOS\n");
     terminal_setcolor(VGA_COLOR_GREEN);
 
-    // char* myString = (char*) malloc((5 + 1)*sizeof(char)); // allocate space for 5 letters + '\0'
-    char myString[6];
+    char* myString = (char*) kmalloc((5 + 1)*sizeof(char)); // allocate space for 5 letters + '\0'
+    // char myString[6];
     int character = 65;
+    char testStr[15];
+    int_to_str(sizeof(myString), testStr);
+    terminal_writestring(testStr);
+    terminal_writestring("\n");
     
     for (unsigned int i = 0; i < 5; ++i) {
         *(myString + i) = (char)character++;
