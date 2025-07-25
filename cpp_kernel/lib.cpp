@@ -1,4 +1,5 @@
 #include "lib.hpp"
+#include "terminal.hpp" // debug purposes
 
 void int_to_str(int data, char* s) {
     static_assert(-5 % 3 == -2);
@@ -23,7 +24,7 @@ void hex_to_str(int data, char* s) {
     *s++ = '0';
     *s++ = 'x';
     if (data == 0) {
-        *s++ = 0;
+        *s++ = '0';
         *s = '\0';
         return;
     }
