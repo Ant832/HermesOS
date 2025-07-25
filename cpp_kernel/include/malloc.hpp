@@ -9,7 +9,7 @@ struct data_block {
     size_t size;
     struct data_block* next;
     bool free;
-    int hint;
+    int hint; // debug purposes
 };
 
 #define HEAP_SIZE 0x10000;

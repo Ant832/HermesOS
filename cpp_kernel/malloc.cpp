@@ -4,24 +4,31 @@ extern char _end;
 uintptr_t heap_start = reinterpret_cast<uintptr_t> (&_end);
 uintptr_t heap_end_ptr = reinterpret_cast<uintptr_t> (&_end) + HEAP_SIZE;
 
-uintptr_t current = reinterpret_cast<uintptr_t> (&_end);
+uintptr_t heap_ptr = reinterpret_cast<uintptr_t> (&_end);
 
 
 
 data_block* global_head = NULL;
 
 void* sbrk(size_t size) {
+    if (heap_ptr + size > heap_end_ptr) {
+        return (void*) -1; // sbrk fail
+    }
+
+    uintptr_t prev = heap_ptr;
 
     for (unsigned int i = 0; i < size; ++i) {
-        ++current;
+        ++heap_ptr;
     }
 
-    data_block* current = global_head;
-    while (current->next) {
-        current = current->next;
+    data_block* curr = global_head;
+    if (curr) {
+        while (curr->next) {
+            curr = curr->next;
+        }
     }
 
-    return (void*)current;
+    return (void*)prev;
 
 }
 
@@ -53,7 +60,6 @@ data_block* request_space(data_block* last, size_t size) {
 }
 
 void* kmalloc(size_t size) {
-    // if size is <= 0, return null
     if (size <= 0) {
         terminal_writestring("error 0\n");
         return NULL;
@@ -61,11 +67,10 @@ void* kmalloc(size_t size) {
 
 
     data_block* block;
-    // else, check if free block of size is available and retrun
     if (!global_head) {
         block = request_space(NULL, size);
         if (!block) {
-            terminal_writestring("error 1\n");
+            terminal_writestring("no global head, block unavailable\n");
             return NULL;
         }
         block->size = size;
@@ -74,10 +79,9 @@ void* kmalloc(size_t size) {
         block->hint = 0x11111111;
         global_head = block;
     } else {
-        // data_block* last = global_head;
         block = find_free(size);
         if (!block) {
-            terminal_writestring("error 1\n");
+            terminal_writestring("no free block\n");
             return NULL;
         } else {
             block->size = size;
@@ -87,11 +91,5 @@ void* kmalloc(size_t size) {
         }
     }
 
-    //if no block, increment new space with ptr and return
-    char hexStr[15];
-    hex_to_str(block->hint, hexStr);
-    terminal_writestring(hexStr);
-    terminal_writestring("\n");
-
-    return block + 1;
+    return block;
 }
