@@ -40,6 +40,11 @@ int kernel_main(void) {
     terminal_writestring(myString);
     terminal_writestring("\n");
 
+    int *heap_data = reinterpret_cast<int*>(0x20601C);
+    char debugStr[15];
+    hex_to_str(*heap_data, debugStr);
+    terminal_writestring(debugStr);
+    terminal_writestring("\n");
 
 
     terminal_setcolor(VGA_COLOR_LIGHT_MAGENTA);

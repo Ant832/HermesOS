@@ -91,5 +91,10 @@ void* kmalloc(size_t size) {
         }
     }
 
+    char debugString[15];
+    hex_to_str(block->hint, debugString);
+    terminal_writestring(debugString);
+    terminal_writestring("\n");
+
     return block;
 }
