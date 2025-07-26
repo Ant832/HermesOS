@@ -21,6 +21,11 @@ void* sbrk(size_t size) {
         ++heap_ptr;
     }
 
+    char debugStr2[15];
+    hex_to_str(heap_ptr, debugStr2);
+    terminal_writestring(debugStr2);
+    terminal_writestring("\n");
+
     data_block* curr = global_head;
     if (curr) {
         while (curr->next) {
@@ -92,11 +97,13 @@ void* kmalloc(size_t size) {
     }
 
     char debugString[15];
-    hex_to_str(block->hint, debugString);
+    hex_to_str(int(block + 1), debugString);
     terminal_writestring(debugString);
     terminal_writestring("\n");
+    terminal_writestring("^^^HERE^^^");
+    terminal_writestring("\n");
 
-    return block;
+    return block + 1;
 }
 
 void kfree(data_block data) {
