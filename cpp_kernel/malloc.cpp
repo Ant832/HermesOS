@@ -98,3 +98,8 @@ void* kmalloc(size_t size) {
 
     return block;
 }
+
+void kfree(data_block data) {
+    
+
+}
