@@ -26,6 +26,6 @@ void* sbrk(size_t size);
 data_block* find_free(size_t size);
 data_block* request_space(data_block* last, size_t size);
 void* kmalloc(size_t size);
-void kfree(data_block data);
+void kfree(void* data);
 
 #endif
