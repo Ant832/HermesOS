@@ -42,6 +42,9 @@ int kernel_main(void) {
 
     kfree(myString);
 
+    char* otherString = (char*) kmalloc(100 * sizeof(char));
+
+    kfree(otherString);
 
 
     terminal_setcolor(VGA_COLOR_LIGHT_MAGENTA);

@@ -21,12 +21,6 @@ void* sbrk(size_t size) {
         ++heap_ptr;
     }
 
-
-    char debugStr[15];
-    hex_to_str(int(heap_ptr), debugStr);
-    terminal_writestring(debugStr);
-    terminal_writestring("\n");
-
     return (void*)prev;
 
 }
@@ -68,11 +62,23 @@ void* kmalloc(size_t size) {
 
     data_block *block;
     if (!global_head) {
+
+
+        char debugString[15];
+        hex_to_str(heap_ptr, debugString);
+        terminal_writestring("Start of Heap     : ");
+        terminal_writestring(debugString);
+        terminal_writestring("\n");
+
+
         block = request_space(NULL, size);
         if (!block) {
             terminal_writestring("no global head, block unavailable\n");
             return NULL;
         }
+
+        
+
         block->size = size;
         block->next = NULL;
         block->free = 0;
@@ -97,10 +103,17 @@ void* kmalloc(size_t size) {
 }
 
 void kfree(void* data) {
-    data_block *toFree = reinterpret_cast<data_block*>(data);
+    int *toFree = reinterpret_cast<int*>(data);
+    int *size = reinterpret_cast<int*>(toFree - sizeof(int));
+    unsigned int totalToRemove = sizeof(data_block) + *size;
 
+    for (unsigned int i = 0; i < totalToRemove; ++i) {
+        --heap_ptr;
+    }
+    
     char debugString[15];
-    int_to_str(toFree->size, debugString);
+    hex_to_str(heap_ptr, debugString);
+    terminal_writestring("Working Heap Free : ");
     terminal_writestring(debugString);
     terminal_writestring("\n");
 
