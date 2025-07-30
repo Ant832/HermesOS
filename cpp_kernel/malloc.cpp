@@ -102,18 +102,30 @@ void* kmalloc(size_t size) {
     return block + 1;
 }
 
-void kfree(void* data) {
-    int *toFree = reinterpret_cast<int*>(data);
-    int *size = reinterpret_cast<int*>(toFree - sizeof(int));
-    unsigned int totalToRemove = sizeof(data_block) + *size;
+data_block* get_data_block(void *data) {
+    return (data_block*)data - 1;
+}
 
-    for (unsigned int i = 0; i < totalToRemove; ++i) {
+void kfree(void *data) {
+    if (!data) {
+        return;
+    }
+
+    data_block *struct_data = get_data_block(data);
+    
+
+
+    for (unsigned int i = 0; i < struct_data->size + sizeof(data_block); ++i) {
         --heap_ptr;
     }
-    
+
+    struct_data->free = 1;
+    struct_data->hint = 0x55555555;
+
+
     char debugString[15];
     hex_to_str(heap_ptr, debugString);
-    terminal_writestring("Working Heap Free : ");
+    terminal_writestring("Heap after free   : ");
     terminal_writestring(debugString);
     terminal_writestring("\n");
 
