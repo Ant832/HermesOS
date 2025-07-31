@@ -17,9 +17,7 @@ void* sbrk(size_t size) {
 
     uintptr_t prev = heap_ptr;
 
-    for (unsigned int i = 0; i < size; ++i) {
-        ++heap_ptr;
-    }
+    heap_ptr += size;
 
     return (void*)prev;
 
@@ -52,7 +50,7 @@ data_block* request_space(data_block *last, size_t size) {
     block->hint = 0x12345678;
     return block;
 }
-
+// TODO: check if block->next = NULL; is neccessary
 void* kmalloc(size_t size) {
     if (size <= 0) {
         terminal_writestring("error trying to malloc size <= 0\n");
@@ -66,7 +64,7 @@ void* kmalloc(size_t size) {
 
         char debugString[15];
         hex_to_str(heap_ptr, debugString);
-        terminal_writestring("Start of Heap     : ");
+        terminal_writestring("Start of Heap                     : ");
         terminal_writestring(debugString);
         terminal_writestring("\n");
 
@@ -88,9 +86,13 @@ void* kmalloc(size_t size) {
         data_block *last = global_head;
         block = find_free(&last, size);
         if (!block) {
-            terminal_writestring("no free block\n");
-            return NULL;
+            block = request_space(last, size);
+            if (!block) {
+                terminal_writestring("no free block\n");
+                return NULL;
+            }
         } else {
+
             block->size = size;
             block->next = NULL;
             block->free = 0;
@@ -107,25 +109,30 @@ data_block* get_data_block(void *data) {
 }
 
 void kfree(void *data) {
-    if (!data) {
+    if (!data ) {
+        terminal_writestring("kfree() failed: null pointer\n");
         return;
     }
-
     data_block *struct_data = get_data_block(data);
-    
 
-
-    for (unsigned int i = 0; i < struct_data->size + sizeof(data_block); ++i) {
-        --heap_ptr;
+    if ((uintptr_t)struct_data < heap_start || (uintptr_t)struct_data >= heap_end_ptr) {
+        terminal_writestring("kfree() failed: data outside heap range\n");
+        return;
     }
 
     struct_data->free = 1;
     struct_data->hint = 0x55555555;
 
+    uintptr_t block_end = (uintptr_t)struct_data + sizeof(data_block) + struct_data->size;
+    if (block_end == heap_ptr) {
+        heap_ptr = (uintptr_t)struct_data;
+    }
+
+
 
     char debugString[15];
-    hex_to_str(heap_ptr, debugString);
-    terminal_writestring("Heap after free   : ");
+    hex_to_str(int(struct_data), debugString);
+    terminal_writestring("Heap space freed, new location   : ");
     terminal_writestring(debugString);
     terminal_writestring("\n");
 

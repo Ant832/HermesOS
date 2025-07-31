@@ -40,10 +40,13 @@ int kernel_main(void) {
     terminal_writestring(myString);
     terminal_writestring("\n");
 
+    // kfree(myString);
+
+    char* otherString = (char*) kmalloc(11 * sizeof(char));
+    // otherString = "123456789\n\0";
+    // terminal_writestring(otherString);
+
     kfree(myString);
-
-    char* otherString = (char*) kmalloc(100 * sizeof(char));
-
     kfree(otherString);
 
 
