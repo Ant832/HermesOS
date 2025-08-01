@@ -58,6 +58,15 @@ void scroll_up_one() {
     terminal_row = VGA_HEIGHT - 1;
 }
 
+void check_terminal_pos() {
+    if (++terminal_column == VGA_WIDTH) {
+        terminal_column = 0;
+        if (++terminal_row == VGA_HEIGHT) {
+            scroll_up_one();
+        }
+    }
+}
+
 void terminal_putchar(char c) {
     if (c == '\n') {
         if (++terminal_row == VGA_HEIGHT) {
@@ -66,12 +75,15 @@ void terminal_putchar(char c) {
         terminal_column = 0;
         return;
     }
-    terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
-    if (++terminal_column == VGA_WIDTH) {
-        terminal_column = 0;
-        if (++terminal_row == VGA_HEIGHT) {
-            scroll_up_one();
+    if (c == '\t') {
+        int tabSize = 4;
+        for (int i = 0; i < tabSize; ++i) {
+            terminal_putentryat(' ', terminal_color, terminal_column, terminal_row);
+            check_terminal_pos();
         }
+    } else {
+        terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+        check_terminal_pos();
     }
 }
 
