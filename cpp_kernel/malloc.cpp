@@ -64,7 +64,7 @@ void* kmalloc(size_t size) {
 
         char debugString[15];
         hex_to_str(heap_ptr, debugString);
-        terminal_writestring("Start of Heap                     : ");
+        terminal_writestring("Start of Heap  \t: ");
         terminal_writestring(debugString);
         terminal_writestring("\n");
 
@@ -126,13 +126,15 @@ void kfree(void *data) {
     uintptr_t block_end = (uintptr_t)struct_data + sizeof(data_block) + struct_data->size;
     if (block_end == heap_ptr) {
         heap_ptr = (uintptr_t)struct_data;
+    } else {
+        terminal_writestring("no heap_ptr reset\n");
     }
 
 
 
     char debugString[15];
     hex_to_str(int(struct_data), debugString);
-    terminal_writestring("Heap space freed, new location   : ");
+    terminal_writestring("Freed, new location: ");
     terminal_writestring(debugString);
     terminal_writestring("\n");
 

@@ -24,12 +24,10 @@ int kernel_main(void) {
     // initialize terminal interface
     terminal_initialize();
 
-    // implement newline support
     terminal_writestring("Welcome to HermesOS\n");
     terminal_setcolor(VGA_COLOR_GREEN);
 
     char* myString = (char*) kmalloc((5 + 1)*sizeof(char)); // allocate space for 5 letters + '\0'
-    // char myString[6];
     int character = 65;
     
 
@@ -40,11 +38,14 @@ int kernel_main(void) {
     terminal_writestring(myString);
     terminal_writestring("\n");
 
-    // kfree(myString);
 
-    char* otherString = (char*) kmalloc(11 * sizeof(char));
-    // otherString = "123456789\n\0";
-    // terminal_writestring(otherString);
+    char* otherString = (char*) kmalloc(10 * sizeof(char));
+    for (unsigned int i = 0; i < 9; ++i) {
+        *(otherString + i) = '0' + i;
+    }
+    *(otherString + 9) = '\n';
+    *(otherString + 10) = '\0';
+    terminal_writestring(otherString);
 
     kfree(myString);
     kfree(otherString);
