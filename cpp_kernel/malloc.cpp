@@ -108,6 +108,39 @@ data_block* get_data_block(void *data) {
     return (data_block*)data - 1;
 }
 
+void try_prev_free() {
+    data_block *current = global_head;
+    data_block *prev = NULL;
+
+    while (current && current->next) {
+        prev = current;
+        current = current->next;
+    }
+
+    while (current && current->free) {
+        uintptr_t block_end = (uintptr_t)current + sizeof(data_block) + current->size;
+        if (block_end == heap_ptr) {
+            heap_ptr = (uintptr_t)current;
+            if (prev) {
+                prev->next = NULL;
+            } else {
+                global_head = NULL;
+            }
+
+            current = global_head;
+            prev = NULL;
+            while (current && current->next) {
+                prev = current;
+                current = current->next;
+            }
+        } else {
+            break;
+        }
+
+    }
+
+}
+
 void kfree(void *data) {
     if (!data ) {
         terminal_writestring("kfree() failed: null pointer\n");
@@ -122,20 +155,12 @@ void kfree(void *data) {
 
     struct_data->free = 1;
     struct_data->hint = 0x55555555;
-
-    uintptr_t block_end = (uintptr_t)struct_data + sizeof(data_block) + struct_data->size;
-    if (block_end == heap_ptr) {
-        heap_ptr = (uintptr_t)struct_data;
-    } else {
-        terminal_writestring("no heap_ptr reset\n");
-    }
-
+    try_prev_free();
 
 
     char debugString[15];
-    hex_to_str(int(struct_data), debugString);
+    hex_to_str(int(heap_ptr), debugString);
     terminal_writestring("Freed, new location: ");
     terminal_writestring(debugString);
     terminal_writestring("\n");
-
 }
