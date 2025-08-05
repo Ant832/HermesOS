@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include "lib.hpp"
 
 #define VGA_WIDTH 80
 #define VGA_HEIGHT 25
@@ -47,9 +48,24 @@ class outstream {
 
 public:
 
-    void operator<<(const char* data) {
+    outstream& operator<<(const char data[]) {
         terminal_writestring(data);
+        return *this;
     }
+
+    outstream& operator<<(int data) {
+        char string[15];
+        int_to_str(data, string);
+        terminal_writestring(string);
+        return *this;
+    }
+
+    // implement hex output
+    // implement char support
+
+};
+
+class endstream {
 
 };
 
