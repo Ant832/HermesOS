@@ -47,6 +47,9 @@ class outstream {
 
 public:
 
+    void operator<<(const char* data) {
+        terminal_writestring(data);
+    }
 
 };
 
