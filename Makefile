@@ -1,7 +1,7 @@
 CC=$$TARGET-gcc
 CXX=$$TARGET-g++
-CFLAGS=-ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -MMD -Icpp_kernel/include
-HEADER=cpp_kernel/include/malloc.hpp cpp_kernel/include/terminal.hpp cpp_kernel/include/lib.hpp
+CFLAGS=-ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -MMD -Isrc/include
+HEADER=src/include/malloc.hpp src/include/terminal.hpp src/include/lib.hpp
 OBJS=boot.o kernel.o terminal.o malloc.o lib.o
 
 run: HermesOS.bin
@@ -12,17 +12,17 @@ run: HermesOS.bin
 HermesOS.bin: $(OBJS) linker.ld
 	$(CC) -T linker.ld -o HermesOS.bin -ffreestanding -O2 -nostdlib $(OBJS) -lgcc
 
-kernel.o: cpp_kernel/kernel.cpp $(HEADER)
-	$(CXX) -c cpp_kernel/kernel.cpp -o kernel.o $(CFLAGS)
+kernel.o: src/kernel.cpp $(HEADER)
+	$(CXX) -c src/kernel.cpp -o kernel.o $(CFLAGS)
 
-lib.o: cpp_kernel/lib.cpp cpp_kernel/include/lib.hpp
-	$(CXX) -c cpp_kernel/lib.cpp -o lib.o $(CFLAGS)
+lib.o: src/lib.cpp src/include/lib.hpp
+	$(CXX) -c src/lib.cpp -o lib.o $(CFLAGS)
 
-terminal.o: cpp_kernel/terminal.cpp cpp_kernel/include/terminal.hpp
-	$(CXX) -c cpp_kernel/terminal.cpp -o terminal.o $(CFLAGS)
+terminal.o: src/terminal.cpp src/include/terminal.hpp
+	$(CXX) -c src/terminal.cpp -o terminal.o $(CFLAGS)
 
-malloc.o: cpp_kernel/malloc.cpp cpp_kernel/include/malloc.hpp
-	$(CXX) -c cpp_kernel/malloc.cpp -o malloc.o $(CFLAGS)
+malloc.o: src/malloc.cpp src/include/malloc.hpp
+	$(CXX) -c src/malloc.cpp -o malloc.o $(CFLAGS)
 
 # kernel.o: c_kernel/kernel.c
 # 	$(CC) -c c_kernel/kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
