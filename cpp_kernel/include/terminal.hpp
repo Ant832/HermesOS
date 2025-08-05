@@ -52,6 +52,13 @@ public:
         terminal_writestring(data);
         return *this;
     }
+        
+    // outstream& operator<<(const char* data) {
+    //     char string[15];
+    //     int_to_str(int(data), string);
+    //     terminal_writestring(string);
+    //     return *this;
+    // }
 
     outstream& operator<<(int data) {
         char string[15];
@@ -60,13 +67,19 @@ public:
         return *this;
     }
 
-    // implement hex output
-    // implement char support
+    outstream& operator<<(outstream& (*function)(outstream&)) {
+
+        return function(*this);
+    }
+
+    // TODO: implement hex output
+
+    // TODO: implement char support
 
 };
 
-class endstream {
-
-};
+inline outstream& endl(outstream& cout) {
+    return cout << "\n";  // needs carriage return?
+}
 
 #endif
