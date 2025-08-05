@@ -51,11 +51,10 @@ int kernel_main(void) {
     kfree(otherString);
 
     outstream cout;
-    const char* data = "a\n";
-    cout << data;
+    cout << "Hello " << 123;
 
     terminal_setcolor(VGA_COLOR_LIGHT_MAGENTA);
     terminal_writestring("Finished\n");
-    
+
     return 0;
 }
