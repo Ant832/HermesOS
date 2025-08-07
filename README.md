@@ -1,2 +1,2 @@
 # HermesOS
-The start of a new os project developed for personal growth and learning
+Microkernel built with custom heap allocator and formatted output stream
