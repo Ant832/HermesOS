@@ -51,8 +51,8 @@ int kernel_main(void) {
     kfree(otherString);
 
     outstream cout;
-    char name[] = "my name";
-    cout << "Hello " << name << endl;
+    char name[] = "my name is ";
+    cout << "Hello " << name << 'a' << endl;
 
     terminal_setcolor(VGA_COLOR_LIGHT_MAGENTA);
     terminal_writestring("Finished\n");
