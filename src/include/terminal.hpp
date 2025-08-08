@@ -52,13 +52,7 @@ public:
         terminal_writestring(data);
         return *this;
     }
-        
-    // outstream& operator<<(const char* data) {
-    //     char string[15];
-    //     int_to_str(int(data), string);
-    //     terminal_writestring(string);
-    //     return *this;
-    // }
+
 
     outstream& operator<<(int data) {
         char string[15];
@@ -72,9 +66,14 @@ public:
         return function(*this);
     }
 
-    // TODO: implement hex output
 
     // TODO: implement char support
+
+    outstream& operator<<(char data) {
+        char buf[2] = {data, '\0'};
+        terminal_writestring(buf);
+        return *this;
+    }
 
 };
 
