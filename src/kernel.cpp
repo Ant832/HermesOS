@@ -52,7 +52,8 @@ int kernel_main(void) {
 
     outstream cout;
     char name[] = "my name is ";
-    cout << "Hello " << name << 'a' << endl;
+    char letter = 't';
+    cout << "Hello " << name << 'a' << 'n' << letter << 1234 << endl;
 
     terminal_setcolor(VGA_COLOR_LIGHT_MAGENTA);
     terminal_writestring("Finished\n");

@@ -66,9 +66,6 @@ public:
         return function(*this);
     }
 
-
-    // TODO: implement char support
-
     outstream& operator<<(char data) {
         char buf[2] = {data, '\0'};
         terminal_writestring(buf);
