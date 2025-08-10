@@ -15,6 +15,8 @@ extern "C" void construct_global_obj();
 #error "needs to be compiled with ix86-elf compiler"
 #endif
 
+outstream cout;
+
 __attribute__((constructor)) void construct_global_obj() {
     // setup globals here
 
@@ -50,7 +52,6 @@ int kernel_main(void) {
     kfree(myString);
     kfree(otherString);
 
-    outstream cout;
     char name[] = "my name is ";
     char letter = 't';
     cout << "Hello " << name << 'a' << 'n' << letter << 1234 << endl;
