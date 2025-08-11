@@ -1,5 +1,6 @@
 #include "lib.hpp"
-#include "terminal.hpp" // debug purposes
+ #include "terminal.hpp" // debug purposes
+#include <stddef.h>
 
 void int_to_str(int data, char* s) {
     static_assert(-5 % 3 == -2);
@@ -40,4 +41,11 @@ void hex_to_str(int data, char* s) {
         *--s = characters[data % 16];
     }
     while (data /= 16);
+}
+
+// TODO: implement memcpy, memcmp, memmove, and memset
+void* memcpy(void* dest, void* src, size_t count) {
+    outstream cout2;
+    cout2 << "test" << endl;
+
 }

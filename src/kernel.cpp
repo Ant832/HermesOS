@@ -56,6 +56,8 @@ int kernel_main(void) {
     char letter = 't';
     cout << "Hello " << name << 'a' << 'n' << letter << 1234 << endl;
 
+    memcpy(name, name, 1);
+
     terminal_setcolor(VGA_COLOR_LIGHT_MAGENTA);
     terminal_writestring("Finished\n");
 
