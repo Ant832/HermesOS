@@ -47,5 +47,6 @@ void hex_to_str(int data, char* s) {
 void* memcpy(void* dest, void* src, size_t count) {
     outstream cout2;
     cout2 << "test" << endl;
-
+    void* a;
+    return a;
 }
