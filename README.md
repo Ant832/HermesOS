@@ -1,2 +1,2 @@
 # HermesOS
-Microkernel built with custom heap allocator and formatted output stream for various types
+Microkernel built with custom heap allocator, memory manipulation, and formatted output stream for various types
