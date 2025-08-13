@@ -43,10 +43,28 @@ void hex_to_str(int data, char* s) {
     while (data /= 16);
 }
 
-// TODO: implement memcpy, memcmp, memmove, and memset
-void* memcpy(void* dest, void* src, size_t count) {
-    outstream cout2;
-    cout2 << "test" << endl;
-    void* a;
-    return a;
+// TODO: implement memcpy, memcmp
+void* memset(void* ptr, int value, size_t num) {
+    unsigned char* buffer = (unsigned char*)ptr;
+    for (size_t i = 0; i < num; ++i) {
+        buffer[i] = (unsigned char) value;
+    }
+    return ptr;
 }
+
+void* memmove(void* dest, void* src, size_t num) {
+    unsigned char* u_src = (unsigned char*) src;
+    unsigned char* u_dest = (unsigned char*) dest;
+
+    if (src > dest) {
+        for (size_t i = 0; i < num; ++i) {
+            u_dest[i] = u_src[i];
+        }
+    } else {
+        for (size_t i = num; i > 0; --i) {
+            u_dest[i - 1] = u_src[i - 1];
+        }
+    }
+    return dest;
+}
+
