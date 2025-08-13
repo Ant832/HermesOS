@@ -64,6 +64,34 @@ int kernel_main(void) {
     memmove(str2+15,str2+20,11);
     cout << str2 << endl;
 
+    char buffer1[] = "DWgaOtP12df0";
+    char buffer2[] = "DWGAOTP12DF0";
+
+    int n;
+
+    n=memcmp ( buffer1, buffer2, sizeof(buffer1) );
+
+    if (n>0) cout << buffer1 << " is greater than " << buffer2 << endl;
+    else if (n<0) cout << buffer1 << " is less than " << buffer2 << endl;
+    else cout << buffer1 << " is the same as " << buffer2 << endl;
+
+    struct {
+        char name[40];
+        int age;
+    } person, person_copy;
+
+    char myname[] = "Pierre de Fermat";
+
+    /* using memcpy to copy string: */
+    memcpy ( person.name, myname, strlen(myname)+1 );
+    person.age = 46;
+
+    /* using memcpy to copy structure: */
+    memcpy ( &person_copy, &person, sizeof(person) );
+
+    cout << "person_copy: " << person_copy.name << ", " << person_copy.age << endl;
+
+
 
     terminal_setcolor(VGA_COLOR_LIGHT_MAGENTA);
     terminal_writestring("Finished\n");

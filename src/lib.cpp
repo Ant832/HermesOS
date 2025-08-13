@@ -68,3 +68,31 @@ void* memmove(void* dest, void* src, size_t num) {
     return dest;
 }
 
+
+int memcmp(void* ptr1, void* ptr2, size_t num) {
+    unsigned char* u_ptr1 = (unsigned char*) ptr1;
+    unsigned char* u_ptr2 = (unsigned char*) ptr2;
+    for (size_t i = 0; i < num; ++i) {
+        if (u_ptr1[i] == u_ptr2[i]) {
+            continue;
+        } else if (u_ptr1[i] > u_ptr2[i]) {
+            return 1; // TODO: fix return value
+        } else {
+            return -1; // TODO: fix return value
+        }
+    }
+
+    return 0;
+}
+
+
+void* memcpy(void* dest, void* src, size_t num) {
+    unsigned char* u_src = (unsigned char*) src;
+    unsigned char* u_dest = (unsigned char*) dest;
+
+    for (size_t i = 0; i < num; ++i) {
+        u_dest[i] = u_src[i];
+    }
+
+    return dest;
+}
