@@ -76,9 +76,9 @@ int memcmp(void* ptr1, void* ptr2, size_t num) {
         if (u_ptr1[i] == u_ptr2[i]) {
             continue;
         } else if (u_ptr1[i] > u_ptr2[i]) {
-            return 1; // TODO: fix return value
+            return 1;
         } else {
-            return -1; // TODO: fix return value
+            return -1;
         }
     }
 
