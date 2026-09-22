@@ -1,4 +1,8 @@
 #!/bin/bash
+$TARGET-gcc boot.s -o boot.o -nostdlib -nostartfiles -c
+$TARGET-g++ -c src/malloc.cpp -o malloc.o -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -MMD -Isrc/include
+$TARGET-g++ -c src/terminal.cpp -o terminal.o -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -MMD -Isrc/include
+$TARGET-g++ -c src/lib.cpp -o lib.o -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -MMD -Isrc/include
 $TARGET-g++ -c src/kernel.cpp -o kernel.o -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti
 $TARGET-gcc -T linker.ld -o HermesOS.bin -ffreestanding -O2 -nostdlib boot.o kernel.o terminal.o malloc.o lib.o -lgcc
 cp HermesOS.bin isodir/boot/HermesOS.bin
