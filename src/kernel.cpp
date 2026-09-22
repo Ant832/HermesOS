@@ -3,9 +3,9 @@ extern "C" void construct_global_obj();
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include "lib.hpp"
-#include "terminal.hpp"
-#include "malloc.hpp"
+#include "include/lib.hpp"
+#include "include/terminal.hpp"
+#include "include/malloc.hpp"
 
 #if defined(__linux__)
 #error "not using cross-compiler"
